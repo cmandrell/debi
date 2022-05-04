@@ -1,5 +1,16 @@
 #!/bin/bash
 
+MountPoint=ChangeMe
+
+# NOTE - Replace [MountPoint] in the rclone command below
+# with the rclone mount point you configured in rclone config along with the drive 
+# folder you are going to use to store your images to (e.g. DEB:/Sxxx )
+
+if [ $MountPoint = ChangeMe ] ; then
+    echo "Please initialize script."
+    exit 1
+fi
+
 # This script works in concert with the KStars app.
 # You need to have the Imagemagick and rclone packages installed on your system
 # and rclone must be configured to point to the Deb.Initiative Google Drive folder
@@ -20,26 +31,26 @@ cd ./Light
 mkdir Fits
 mkdir jpgs
 # initialize counter and loop continuously waiting for a Fits file to show up
+
 n=1
-while [ $n -lt 2 ]; do
-if [ -e *.fits ]
-then
-# convert Fits file to a jpg file - need to play games to get the filename
-# to map over to the converted file - need to figure out how to trim .fits
-echo "Converting" *.fits
-ls *.fits > filename
-mapfile -t name <filename
-convert *.fits $name.jpg
-echo "Uploading" *.jpg
-# upload to rclone drive - NOTE - Replace [MountPoint] in the rclone command below
-# with the rclone mount point you configured in rclone config along with the drive 
-# folder you are going to use to store your images to (e.g. DEB:/Sxxx )
-rclone copy *.jpg [MountPoint]
-# Move the fits and jpg files to the appropriate subdirectories
-mv *.fits ./Fits
-mv *.jpg ./jpgs
-echo "Conversion and Uploading Complete"
-fi
-# Sleep for 10 seconds and check again
-sleep 10
+while [ $n -lt 2 ]
+do
+    for f in *.fits ; do
+	# convert Fits file to a jpg file - need to play games to get the filename
+	# to map over to the converted file - need to figure out how to trim .fits
+	echo "Converting" $f
+	jf=${f%.fits}.jpg
+	convert $f $jf
+	echo "Uploading" $jf
+	# upload to rclone drive
+	rclone copy $jf $MountPoint
+	# Move the fits and jpg files to the appropriate subdirectories
+	mv $f ./Fits
+	mv $jf ./jpgs
+	echo "Conversion and Uploading Complete"
+    done
+    # Sleep for 10 seconds and check again
+    sleep 10
 done
+
+
