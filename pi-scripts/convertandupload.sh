@@ -26,28 +26,34 @@ fi
 # The script checks for new files every 10 seconds (allows time for files to finish moving)
 #
 # change directory to the Light folder
-cd ./Light
+cd ./Light || (echo "Light folder not found" && exit 1 )
 # create the Fits and jpgs folders
-mkdir Fits
-mkdir jpgs
+[[ -d Fits ]] || mkdir Fits
+[[ -d jpgs ]] || mkdir jpgs
 # initialize counter and loop continuously waiting for a Fits file to show up
 
 n=1
 while [ $n -lt 2 ]
 do
-    for f in *.fits ; do
+    files=$(ls *.fits 2>/dev/null)
+    for f in  $files ; do
 	# convert Fits file to a jpg file - need to play games to get the filename
 	# to map over to the converted file - need to figure out how to trim .fits
-	echo "Converting" $f
+	echo `date` "Converting" $f
 	jf=${f%.fits}.jpg
 	convert $f $jf
-	echo "Uploading" $jf
-	# upload to rclone drive
-	rclone copy $jf $MountPoint
-	# Move the fits and jpg files to the appropriate subdirectories
+	if [[ -r $jf ]] ; then
+		echo "Uploading" $jf
+		# upload to rclone drive
+		rclone copy $jf $MountPoint
+		# Move the fits and jpg files to the appropriate subdirectories
+		mv $jf ./jpgs
+	else
+		echo `date` "convert $f failed?"
+	fi
+	# Note that if we failed somehow, move the file, anyways.
 	mv $f ./Fits
-	mv $jf ./jpgs
-	echo "Conversion and Uploading Complete"
+	echo `date` "Conversion and Uploading Complete"
     done
     # Sleep for 10 seconds and check again
     sleep 10
