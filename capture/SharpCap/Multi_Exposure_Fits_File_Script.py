@@ -9,7 +9,7 @@
 # set capture area to Full Sensor
 # set binning to 1
 # You Must Have Google Desktop G:\Drive setup for this script to work https://www.google.com/drive/download/
-# This script writes to LiveTest LunarEclipse07112022 folder
+# This script writes to LiveTest LunarEclipse08112022 folder
 # Please replace Observer___ with Observer"Your Initials Here"_
 # In SharpCap settings it is best to remove all formatting to your fits file naming or you will create multiple sub_folders on the DEB drive
 # **** New File and Folder name ****
