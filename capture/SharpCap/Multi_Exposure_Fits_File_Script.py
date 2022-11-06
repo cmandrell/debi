@@ -14,6 +14,7 @@
 # In SharpCap settings it is best to remove all formatting to your fits file naming or you will create multiple sub_folders on the DEB drive
 # **** New File and Folder name ****
 # Updated 11_5_2022 I changed the date to *** 08112022 *** from 07112022
+# 08052022 changed exposure settings
 
 
 import time
