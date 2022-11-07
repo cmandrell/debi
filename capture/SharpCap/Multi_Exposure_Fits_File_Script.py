@@ -47,5 +47,5 @@ for q in range (,36):
       if not SharpCap.SelectedCamera.Capturing :
         break
       time.sleep(.) 
-    time.sleep(8.8)
+    time.sleep(58.8)
 
