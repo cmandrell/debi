@@ -52,15 +52,13 @@ set number of times (5).
 ## Modifying the files to your system ##
 1. Modify the test automation  fits.py script by opening it in the
     SharpCap script console and change the following:
-
   - Change the SharpCap.Settings.CaptureFolder line to replace
     “r’C:\Users\...” to point to a folder on YOUR local drive
-
   - Optionally: Change the SharpCap.TargetName values to whatever you want the file
     names to be titled.
   - Save the script when modification is complete
 2. Modify the ‘test automation – tiffs.py’ script by opening it in the SharpCap script console and
-change the following:
+   change the following:
   - Change the SharpCap.Settings.CaptureFolder line to replace “r”G:\My Drive\...” to
     point to a folder on the Deb Google drive that you want to use.
     Note that this assumes that you have mapped the Deb Google drive
