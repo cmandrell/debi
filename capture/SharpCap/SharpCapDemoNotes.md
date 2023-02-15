@@ -1,4 +1,4 @@
-= SharpCap ASI178 Demo Notes ReadMe =
+# SharpCap ASI178 Demo Notes ReadMe #
 
 This ReadMe file details the included two SharpCap Python scripts
 (test automation  fits.py and test automation  tiffs.py) and one
@@ -8,7 +8,7 @@ IMPORTANT: These files were tailored for Bill Kloeppings laptop.
 These files must be modified to be usable on other systems.
 Modifications can be easily performed from within SharpCap.
 
-== Description of files ==
+## Description of files ##
 *test automation  fits.py* sets the file output format to
 .fits files and specifies the SharpCap capture folder destination
 (on the local drive) then starts taking a continual sequence of 4
@@ -49,7 +49,7 @@ images in total) and stores them on the local drive then takes 4
 drive (e.g.  Google drive) and then will repeat the sequence the
 set number of times (5).
 
-== Modifying the files to your system ==
+## Modifying the files to your system ##
 1. Modify the test automation  fits.py script by opening it in the
     SharpCap script console and change the following:
 
