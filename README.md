@@ -3,8 +3,10 @@ Dynamic Eclipse Broadcast Initiative
 
 ## Quick Start
 
-If you're already familiar with using git or github, 
-`git clone https://github.com/Dynamic-Eclipse-Broadcast-Initiative/debi.git`
+If you're already familiar with using git or github,
+```
+git clone https://github.com/Dynamic-Eclipse-Broadcast-Initiative/debi.git
+```
 to fetch the scripts to your system.
 
 Once you've fetched the scripts, you can update them with `git pull`
