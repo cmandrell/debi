@@ -3,8 +3,10 @@ Dynamic Eclipse Broadcast Initiative
 
 ## Quick Start
 
-If you're already familiar with using git or github,
+If you are already familiar with using git through something like VS Code, or Git Desktop,
+you can get the code from [https://github.com/Dynamic-Eclipse-Broadcast-Initiative/debi.git](here).
 ```
+winget install --id Git.Git -e --source winget
 git clone https://github.com/Dynamic-Eclipse-Broadcast-Initiative/debi.git
 ```
 to fetch the scripts to your system.
