@@ -23,7 +23,11 @@ def merge_fits(fitsnames, outjpeg, gamma=4.0):
         primary = hdul[0]
 
         # XXX assumes monochrome for now.
-        cvin = cv.cvtColor(cv.Mat((primary.data/256).astype('uint8')), cv.COLOR_GRAY2BGR)
+        rescaled = primary.data/256
+        truncated = rescaled.astype('uint8')
+        datau8 = cv.Mat(truncated)
+        # cvtColor generates a warning: "processing of multi-channel arrays might be changed in the future"
+        cvin = cv.cvtColor(datau8, cv.COLOR_GRAY2BGR)
         image_list.append(cvin)
         exp_list.append(primary.header['EXPTIME'])
     exposure_times = np.array(exp_list, dtype=np.float32)
@@ -49,9 +53,5 @@ def merge_images(image_list, exposures, outfile, gamma):
     cv.imwrite(outfile, res_debevec_8bit)
 
 if __name__ == "__main__":
-    #files = glob.glob('/Users/castor/astro/Crescent/test_24_Mar_2023 2023-03-25T03_27_28Z_0000[5-8]*.fits')
-    files = sys.argv
+    files = sys.argv[1:]
     merge_fits(files, '/tmp/fitsmerg.jpg')
-
-
-
