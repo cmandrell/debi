@@ -7,6 +7,32 @@ from  astropy.io import fits
 import cv2 as cv
 import numpy as np
 
+# FITS cards
+FC_BAYERPAT = 'BAYERPAT'
+FC_BITPIX = 'BITPIX'
+FC_EXPTIME = 'EXPTIME'
+FC_FILTPAT = 'FILT-PAT'
+
+def fitsread(name) -> (cv.Mat, fits.header.Header):
+    """Open a path to a fits file, for use with OpenCV.
+
+    Args:
+        name: str, file-like or pathlib.Path (like fits.io.open)
+            File to be opened.
+
+    Returns:
+        Tuple of matrix and header
+    """
+    hdul = fits.open(f)
+    if len(hdul) != 1:
+        raise NotImplemented("Only supports single FITS HDU for now.")
+    primary = hdul[0]
+
+    # With raw images we may have bayer patterns to register.
+    # For now we support only the sharpcap monochrome format.
+    return (cv.Mat(primary.data), primary.header)
+
+
 # This is designed to work with the FITS files generated
 # by Sharpcap as a sequence of multiple exposures.
 
@@ -17,11 +43,7 @@ def merge_fits(fitsnames, outjpeg, gamma=4.0):
     image_list = []
     exp_list = []
     for f in fitsnames:
-        hdul = fits.open(f)
-        if len(hdul) != 1:
-            raise ValueError("Unexpected HDUs")
-        primary = hdul[0]
-
+        (image, header) = fitsread(f)
         # XXX assumes monochrome for now.
         rescaled = primary.data/256
         truncated = rescaled.astype('uint8')

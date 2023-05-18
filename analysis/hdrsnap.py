@@ -29,10 +29,12 @@ import watchdog.events
 
 import merge_fits
 
+loglevel = logging.INFO
+
 def process_workfile(workfile: Text, destfile: Text) -> bool:
     image_files = []
     with open(workfile, 'r') as fd:
-        logging.debug(f'Found workfile {workfile}')
+        logging.debug(f'Processing workfile {workfile}')
         for line in fd:
             fn = line.strip()
             if not os.access(fn, os.R_OK):
@@ -70,20 +72,29 @@ class HdrHandler(watchdog.events.PatternMatchingEventHandler):
 
 # Watch a directory for work files, and call a worker function if it finds any.
 def watch_dir(watchdir: Text, destdir: Text):
-    logging.basicConfig(level=logging.INFO)
 
+    """
+    TODO: use watchdog
     event_handler = HdrHandler()
 
     observer = watchdog.observers.Observer()
     observer.schedule(event_handler, watchdir)
     observer.start()
+    """
+    logging.info("Hello!")
+
+    workfunc = lambda: process_dir(watchdir, destdir)
 
     try:
         while True:
             time.sleep(1)
+            workfunc()
     finally:
+        pass
+    """
         observer.stop()
         observer.join()
+    """
 
 
 if __name__ == "__main__":
@@ -93,12 +104,17 @@ if __name__ == "__main__":
     parser.add_argument('watchdir', help='directory to monitor for workfiles')
     parser.add_argument('destdir', help='destination directory for results')
     parser.add_argument('--once', action='store_true', help='run worker once')
+    parser.add_argument('--debug', action='store_true', help='run worker once')
 
     args = parser.parse_args()
+
+    if args.debug:
+        loglevel = logging.DEBUG
+
+    logging.basicConfig(level=loglevel)
 
     if args.once:
         process_dir(args.watchdir, args.destdir)
         sys.exit()
 
-    raise NotImplemented("Only supporting processing once right now....")
     watch_dir(args.watchdir, args.destdir)
