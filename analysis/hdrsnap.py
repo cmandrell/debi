@@ -43,9 +43,16 @@ def process_workfile(workfile: Text, destfile: Text) -> bool:
             image_files.append(fn)
     try:
         print(image_files)
-        merge_fits.merge_fits(image_files, destfile)
+        if '.fits' in image_files[0]:
+            merge_fits.merge_fits(image_files, destfile)
+        elif '.tif' in image_files[0]:
+            merge_fits.merge_tifs(image_files, destfile)
+        else:
+            raise(ValueError(f'Unknown image format'))
+
     except Exception as e:
         logging.error(e)
+        raise(e)
         return False
     return True
 
@@ -57,6 +64,7 @@ def create_dest_and_fail_paths(workfile: Text, destdir: Text):
 def process_dir(watchdir, destdir):
     for workfile in glob.glob(os.path.join(watchdir, 'snap*.txt')):
         destfile, failedfile  = create_dest_and_fail_paths(workfile, destdir)
+        logging.info(f'Processing {workfile} to make {destfile}')
         if process_workfile(workfile, destfile):
             os.remove(workfile)
         else:
