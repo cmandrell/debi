@@ -5,7 +5,7 @@
 # resets to Live mode with original exposure/gain/resolution after run
 #####################################################################################
 
-import time 
+import time
 
 ### List of variables to be changed by user #########################################
 path = r'C:\DEB\Totality' # path for capture folder
@@ -29,11 +29,11 @@ suppress_settings_file = True # suppress camera settings data files after first 
 def Image(exposure):
 
     for x in exposure:
-       
+
         SharpCap.SelectedCamera.Controls.Exposure.ExposureMs = x
         local_time = time.localtime()
         str_time = time.strftime("%H%M%S",local_time)
-        SharpCap.SelectedCamera.CaptureSingleFrameTo(path+r'\totality_'+str_time+'_'+str(x)+'ms.tif')   
+        SharpCap.SelectedCamera.CaptureSingleFrameTo(path+r'\totality_'+str_time+'_'+str(x)+'ms.tif')
 
 ### Initial Setup ####################################################################
 SharpCap.SelectedCamera = SharpCap.Cameras[0]
