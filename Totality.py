@@ -6,7 +6,7 @@
 #####################################################################################
 
 import os
-import time 
+import time
 
 ### List of variables to be changed by user #########################################
 path = r'C:\DEB\Totality' # path for capture folder
@@ -56,7 +56,7 @@ reset_exp = SharpCap.SelectedCamera.Controls.Exposure.Value
 reset_area = SharpCap.SelectedCamera.Controls.Resolution.Value
 reset_gain = SharpCap.SelectedCamera.Controls.Gain.Value
 
-#Forced values 
+#Forced values
 SharpCap.SelectedCamera.Controls.Binning.Value = '1'
 SharpCap.SelectedCamera.Controls.OutputFormat.Automatic = False
 SharpCap.SelectedCamera.Controls.OutputFormat.Value = 'TIFF files (*.tif)'
@@ -65,30 +65,31 @@ SharpCap.SelectedCamera.Controls.Resolution.Value = SharpCap.SelectedCamera.Cont
 SharpCap.SelectedCamera.Controls.Gain.Value = '50'
 
 if not os.access(watch_dir, os.W_OK):
-    raise(ValueError, 'Cannot read watch directory {}!'.format(watch_dir))
+    print(f'Cannot write watch directory {watch_dir} -- disabling upload!')
+    watch_dir = None
 
 ### Capture images ####################################################################
 start = time.time()
 i = 1
 
 while True:
-        
+
     if (i > maxcount and use_maxcount) or ((time.time()-start) > duration and use_duration):
         break
-    
+
     Image(exposure)
-    
+
     if suppress_settings_file:
-        SharpCap.Settings.CreateCameraSettingsFile = False 
-        
+        SharpCap.Settings.CreateCameraSettingsFile = False
+
     time.sleep(between_set)
-    i+=1        
+    i+=1
 
 ### Return SharpCap to live mode with reset values #####################################
-SharpCap.Settings.CreateCameraSettingsFile = True   
+SharpCap.Settings.CreateCameraSettingsFile = True
 SharpCap.SelectedCamera.LiveView = True
-SharpCap.SelectedCamera.Controls.Resolution.Value = reset_area 
-SharpCap.SelectedCamera.Controls.Gain.Value = reset_gain 
-SharpCap.SelectedCamera.Controls.Exposure.Value = reset_exp 
+SharpCap.SelectedCamera.Controls.Resolution.Value = reset_area
+SharpCap.SelectedCamera.Controls.Gain.Value = reset_gain
+SharpCap.SelectedCamera.Controls.Exposure.Value = reset_exp
 
 # END OF PROGRAM
