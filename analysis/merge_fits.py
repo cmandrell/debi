@@ -6,6 +6,7 @@ import sys
 from  astropy.io import fits
 import cv2 as cv
 import numpy as np
+import re
 
 # FITS cards
 FC_BAYERPAT = 'BAYERPAT'
@@ -23,7 +24,7 @@ def fitsread(name) -> (cv.Mat, fits.header.Header):
     Returns:
         Tuple of matrix and header
     """
-    hdul = fits.open(f)
+    hdul = fits.open(name)
     if len(hdul) != 1:
         raise NotImplemented("Only supports single FITS HDU for now.")
     primary = hdul[0]
@@ -54,6 +55,20 @@ def merge_fits(fitsnames, outjpeg, gamma=4.0):
         exp_list.append(primary.header['EXPTIME'])
     exposure_times = np.array(exp_list, dtype=np.float32)
     merge_images(image_list, exposure_times, outjpeg, gamma)
+
+def merge_tifs(tifnames, outjpeg, gamma=4.0):
+    """Merge sharpcap-captured TIFF files into an HDR jpeg."""
+    image_list = []
+    exp_list = []
+    for f in tifnames:
+        image_list.append(cv.imread(f))
+        m = re.search(r'([0-9.]*)ms', f)
+        if not m:
+            raise ValueError(f'Exposure Time not matched: {f}')
+        exp_list.append(float(m.group(1)))
+    exposure_times = np.array(exp_list, dtype=np.float32)
+    merge_images(image_list, exposure_times, outjpeg, gamma)
+
 
 def merge_images(image_list, exposures, outfile, gamma):
     """Merge an image list / exposure list into a single image.
