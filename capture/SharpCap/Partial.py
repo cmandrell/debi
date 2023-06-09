@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Capture .ser files with single.png for "ser_time" seconds at 1000x1000 resolution
 #
 # Uses user settings for exposure and gain
@@ -61,7 +60,7 @@ SharpCap.Settings.UseManualTemplates = False
 #####################################################################################
 
 import time
- 
+
 path = r'C:\DEB\Partial' # path for main capture folder
 
 ### Initial Setup ####################################################################
@@ -87,14 +86,13 @@ str_time = time.strftime("%Y-%m-%dT%H_%M_%S",local_time)
 SharpCap.SelectedCamera.Controls.OutputFormat.Value = 'PNG file (*.png)'
 SharpCap.SelectedCamera.CaptureSingleFrameTo(path+r'\partial '+str_time+'.png')
 
-SharpCap.SelectedCamera.Controls.OutputFormat.Value = 'SER file (*.ser)'   
+SharpCap.SelectedCamera.Controls.OutputFormat.Value = 'SER file (*.ser)'
 SharpCap.SelectedCamera.PrepareToCapture()
 SharpCap.SelectedCamera.RunCapture()
 time.sleep(2)
-SharpCap.SelectedCamera.StopCapture()  
+SharpCap.SelectedCamera.StopCapture()
 
 ### Reset resolution ###################################################################
-SharpCap.SelectedCamera.Controls.Resolution.Value = reset_area 
+SharpCap.SelectedCamera.Controls.Resolution.Value = reset_area
 
 # END OF PROGRAM
->>>>>>> debi/main
