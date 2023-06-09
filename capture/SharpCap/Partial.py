@@ -9,7 +9,7 @@ import time
 
 ser_time = 5 #.ser collection duration in seconds at users exposure
 
-str_date = time.strftime("%d%b%Y",time.localtime())
+str_date = time.strftime("%d%b%Y",time.gmtime())
 path = r'C:\DEB\\'+str_date+r'\Partial' # path for main capture folder
 
 str_time = time.strftime("%H%M%S",time.gmtime())
